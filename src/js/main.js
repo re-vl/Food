@@ -131,7 +131,7 @@ window.addEventListener("DOMContentLoaded", () => {
       }
    });
    //открытие модального окна через время
-   //const modalTimeId = setTimeout(openModal, 5000);
+   const modalTimeId = setTimeout(openModal, 5000);
 
    function showModalByScroll() {
       if (
@@ -222,4 +222,63 @@ window.addEventListener("DOMContentLoaded", () => {
       ".menu .container",
       "menu__item"
    ).render();
+
+   //Forms
+
+   const forms = document.querySelectorAll("form");
+   const message = {
+      loading: "Загрузка...",
+      success: "Спасибо! Скоро мы с вами свяжемся",
+      failure: "Что-то пошло не так...",
+   };
+
+   forms.forEach((item) => {
+      postData(item); //вызываем функцию обрабртки
+   });
+
+   function postData(form) {
+      form.addEventListener("submit", (e) => {
+         e.preventDefault();
+
+         let statusMessage = document.createElement("div"); //создаем элемент
+         statusMessage.classList.add("status"); //присваеваем уму класс
+         statusMessage.textContent = message.loading; //доб.сообщение "Загрузка"
+         form.appendChild(statusMessage); //добавляем форму на страницу
+
+         const request = new XMLHttpRequest(); //создаем конструктор запроса
+         request.open("POST", "server.php"); //открываем настройку запроса
+
+         //настройка заголовков для JSON
+         request.setRequestHeader(
+            "Content-type", // тип какого то контента
+            "application/json; charset=utf-8"
+         );
+         const formData = new FormData(form); //конструктор сбора данных
+
+         // преобразовываем formData в JSON
+         const object = {};
+         formData.forEach(function (value, key) {
+            object[key] = value;
+         });
+         const json = JSON.stringify(object); //до сюда
+
+         request.send(json); //отправляем json данные
+
+         request.addEventListener("load", () => {
+            //проверка что запрос прошел
+            if (request.status === 200) {
+               console.log(request.response);
+               //изменяем сообщение  на success
+               statusMessage.textContent = message.success;
+               form.reset(); //сброс формы после отправки
+               setTimeout(() => {
+                  statusMessage.remove(); //удаляем блок сообщения
+               }, 2000); //через 2 секунды
+            } else {
+               //сообщение об ошибке
+               statusMessage.textContent = message.failure;
+            }
+         });
+      });
+   }
 });
