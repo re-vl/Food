@@ -246,38 +246,32 @@ window.addEventListener("DOMContentLoaded", () => {
          `;
          form.insertAdjacentElement("afterend", statusMessage);
 
-         const request = new XMLHttpRequest(); //создаем конструктор запроса
-         request.open("POST", "server.php"); //открываем настройку запроса
-
-         //настройка заголовков для JSON
-         request.setRequestHeader(
-            "Content-type", // тип какого то контента
-            "application/json; charset=utf-8"
-         );
          const formData = new FormData(form); //конструктор сбора данных
 
-         // преобразовываем formData в JSON
+         // преобразовываем formData в массив для JSON
          const object = {};
          formData.forEach(function (value, key) {
             object[key] = value;
          });
-         const json = JSON.stringify(object); //до сюда
-
-         request.send(json); //отправляем json данные
-
-         request.addEventListener("load", () => {
-            //проверка что запрос прошел
-            if (request.status === 200) {
-               console.log(request.response);
-               //изменяем сообщение  на success
+         //запрос на сервер через fetch
+         fetch("server.php", {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json",
+            },
+            body: JSON.stringify(object),
+         })
+            .then((data) => {
+               console.log(data);
                showThanksModal(message.success);
-               form.reset(); //сброс формы после отправки
-               statusMessage.remove(); //удаляем блок сообщения
-            } else {
-               //сообщение об ошибке
+               statusMessage.remove();
+            })
+            .catch(() => {
                showThanksModal(message.failure);
-            }
-         });
+            })
+            .finally(() => {
+               form.reset();
+            });
       });
    }
 
