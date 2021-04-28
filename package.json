@@ -8,28 +8,7 @@
   },
   "author": "",
   "license": "ISC",
-  "browserslist": [
-    "last 2 chrome versions",
-    "last 2 firefox versions",
-    "last 2 ios versions"
-  ],
   "devDependencies": {
-    "@babel/core": "^7.13.14",
-    "@babel/preset-env": "^7.13.12",
-    "autoprefixer": "^9.8.6",
-    "babel-loader": "^8.2.2",
-    "browser-sync": "^2.26.14",
-    "gulp": "^4.0.2",
-    "gulp-clean-css": "^4.2.0",
-    "gulp-postcss": "^8.0.0",
-    "gulp-sass": "^4.1.0",
-    "json-server": "^0.16.3",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.12",
-    "webpack-stream": "^5.2.1"
-  },
-  "dependencies": {
-    "bootstrap": "^5.0.0-beta3",
-    "core-js": "^3.10.0"
+    "json-server": "^0.16.1"
   }
 }
