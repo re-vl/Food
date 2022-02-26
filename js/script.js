@@ -8,19 +8,20 @@ import slider from "./modules/slider";
 import { openModal } from "./modules/modal";
 
 window.addEventListener("DOMContentLoaded", function () {
-   const modalTimerId = setTimeout(
-      () => openModal(".modal", modalTimerId),
-      300000
-   );
+   const modalTimerId = setTimeout(() => openModal(".modal", modalTimerId), 300000);
+   let now = new Date(),
+      mon,
+      day,
+      year,
+      newDate;
+   year = now.getFullYear();
+   mon = now.getMonth() + 2;
+   day = now.getDate();
+   newDate = year + "-" + mon + "-" + day;
 
-   tabs(
-      ".tabheader__item",
-      ".tabcontent",
-      ".tabheader__items",
-      "tabheader__item_active"
-   );
+   tabs(".tabheader__item", ".tabcontent", ".tabheader__items", "tabheader__item_active");
    modal("[data-modal]", ".modal", modalTimerId);
-   timer(".timer", "2021-06-11");
+   timer(".timer", newDate);
    cards();
    calc();
    forms("form", modalTimerId);
